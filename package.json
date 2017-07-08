@@ -1,21 +1,18 @@
 {
-  "name": "erp-sync-queue",
+  "name": "aqueduct-sync-mongo",
   "version": "1.0.0",
-  "description": "Used to create  the sync queue and add collection hook to turn local operations into sync requests",
+  "description": "Local connection support for Aqueduct, with MongoDB queue",
   "main": "lib/index.js",
   "scripts": {
     "test": "mocha --harmony -r ./tests/setup.js --recursive tests"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://bitbucket.org/nicocrm/erp-sync-queue.git"
+    "url": "git+https://github.com/nicocrm/aqueduct-sync-mongo.git"
   },
   "author": "Nicolas Galler",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/nicocrm/erp-sync-queue/issues"
-  },
-  "homepage": "https://github.com/nicocrm/erp-sync-queue#readme",
+  "homepage": "https://github.com/nicocrm/aqueduct-sync-mongo#readme",
   "devDependencies": {
     "chai": "^4.0.2",
     "eslint": "^4.1.1",
