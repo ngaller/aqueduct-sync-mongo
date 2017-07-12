@@ -44,6 +44,7 @@ describe('Queue', () => {
     const msg = await queue.get()
     const identifier = msg.payload.identifier
     expect(identifier.toString()).to.equal(id.toString())
+    expect(identifier.equals(id)).to.equal(true)
   })
 
   it('returns null when no message to ack', async () => {
