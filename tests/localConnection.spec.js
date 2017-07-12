@@ -45,6 +45,18 @@ describe('localConnection', () => {
       }))
   })
 
+  it('updates using identifier', async () => {
+    const db = await testConnection()
+    const lc = new LocalConnection(db)
+    lc.addCollection(customerConfig)
+    const r = await  db.collection('Customers').insertOne({CustNum: 'WITH-ID', Name: 'Poudroux', Amount: 24})
+    const id = r.insertedId
+    await lc.Customers.update({Name: 'Joe'}, id)
+    const modified = await db.collection('Customers').findOne({_id: id})
+    expect(modified).to.be.ok
+    expect(modified.Name).to.equal('Joe')
+  })
+
   it('updates multiple records', async () => {
     const db = await testConnection()
     const lc = new LocalConnection(db)

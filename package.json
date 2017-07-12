@@ -1,6 +1,6 @@
 {
   "name": "aqueduct-sync-mongo",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Local connection support for Aqueduct, with MongoDB queue",
   "main": "dist/index.js",
   "scripts": {
@@ -29,6 +29,7 @@
   },
   "dependencies": {
     "es6-promisify": "^5.0.0",
+    "is-plain-object": "^2.0.4",
     "mongodb-queue": "^3.1.0"
   }
 }
