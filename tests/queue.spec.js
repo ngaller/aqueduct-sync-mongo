@@ -1,6 +1,7 @@
 const testConnection = require('./testConnection.js')
 const QueueFactory = require('../lib/buildQueue')
 const mongoDbQueue = require('mongodb-queue')
+const mongodb = require('mongodb')
 const promisify = require('es6-promisify')
 
 // these tests require mongodb to be running locally
@@ -32,6 +33,17 @@ describe('Queue', () => {
     await promisify(realQueue.add, realQueue)({payload: 'hello'})
     const msg = await queue.get()
     expect(msg.payload).to.eql({payload: 'hello'})
+  })
+
+  it('saves message that has an objectid', async () => {
+    const db = await testConnection()
+    const queue = await QueueFactory(db, 'ErpSyncQueue')
+    const realQueue = mongoDbQueue(db, 'ErpSyncQueue')
+    const id = mongodb.ObjectId()
+    await promisify(realQueue.add, realQueue)({identifier: id})
+    const msg = await queue.get()
+    const identifier = msg.payload.identifier
+    expect(identifier.toString()).to.equal(id.toString())
   })
 
   it('returns null when no message to ack', async () => {
