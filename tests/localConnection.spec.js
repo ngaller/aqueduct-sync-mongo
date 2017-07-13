@@ -1,6 +1,11 @@
 const testConnection = require('./testConnection.js'),
-  LocalConnection = require('../lib/localConnection.js'),
-  {omit} = require('lodash')
+  LocalConnection = require('../lib/localConnection.js')
+
+const omit = (obj, ...keys) => {
+  const clone = Object.assign({}, obj)
+  keys.forEach(k => delete clone[k])
+  return clone
+}
 
 const customerConfig = {
   local: 'Customers',
