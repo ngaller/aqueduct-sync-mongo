@@ -30,6 +30,7 @@ describe('localConnection', () => {
       expect(upsertResult.inserted).to.equal(1)
       return db.collection('Customers').findOne({CustNum: '6'}).then((result) => {
         expect(result.CustNum).to.equal('6')
+        expect(String(result._id)).to.equal(String(upsertResult.recordId))
       })
     })
   })
@@ -46,6 +47,7 @@ describe('localConnection', () => {
           expect(omit(result, '_id')).to.eql({
             CustNum: '10', Name: 'Testing', Amount: 24, OtherField: 123
           })
+          expect(String(result._id)).to.equal(String(upsertResult.recordId))
         })
       }))
   })
