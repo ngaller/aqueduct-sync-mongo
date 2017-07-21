@@ -79,7 +79,7 @@ describe('localConnection', () => {
     it('adds child to collection', async () => {
       await db.collection('Customers').remove({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent', Children: [{ChildId: '1'}]})
-      await lc.Customers.addOrUpdateChildInCollection('10', 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
+      await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
       expect(customer.Children).to.eql([{ChildId: '1'}, {ChildId: '2', Content: 'Test'}])
     })
@@ -87,7 +87,7 @@ describe('localConnection', () => {
     it('adds child to collection when it does not exist', async () => {
       await db.collection('Customers').remove({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent'})
-      await lc.Customers.addOrUpdateChildInCollection('10', 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
+      await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
       expect(customer.Children).to.eql([{ChildId: '2', Content: 'Test'}])
     })
@@ -95,7 +95,7 @@ describe('localConnection', () => {
     it('replaces existing child in collection', async () => {
       await db.collection('Customers').remove({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent', Children: [{ChildId: '1'}]})
-      await lc.Customers.addOrUpdateChildInCollection('10', 'Children', {ChildId: '1', Content: 'Test'}, 'ChildId')
+      await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '1', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
       expect(customer.Children).to.eql([{ChildId: '1', Content: 'Test'}])
     })
