@@ -39,6 +39,15 @@ describe('localConnection', () => {
       })
     })
 
+    it('returns the record id which is a plain string', async () => {
+      return lc.Customers.upsert({CustNum: '6'}, 'CustNum').then(upsertResult => {
+        expect(upsertResult.recordId).to.be.a('string')
+        return db.collection('Customers').findOne({_id: upsertResult.recordId}).then((result) => {
+          expect(result.CustNum).to.equal('6')
+        })
+      })
+    })
+
     it('updates existing record', async () => {
       return db.collection('Customers').insert({CustNum: '10', Name: 'Poudroux', Amount: 24}).then(() =>
         lc.Customers.upsert({CustNum: '10', Name: 'Testing', OtherField: 123}).then(upsertResult => {
