@@ -11,6 +11,10 @@ const customerConfig = {
   local: 'Customers',
   fields: ['CustNum']
 }
+const fieldLessConfig = {
+  local: 'FieldLess',
+  localKey: ['key1', 'key2']
+}
 // localConnection is responsible for abstracting the mongo database
 describe('localConnection', () => {
   let db, lc
@@ -18,13 +22,21 @@ describe('localConnection', () => {
   beforeEach(async () => {
     db = await testConnection()
     lc = new LocalConnection(db)
-    lc.addCollection(customerConfig)
+    // make the collection exist, otherwise they'll log errors about missing indexes
     await db.collection('Customers').remove({})
+    await db.collection('FieldLess').remove({})
+    lc.addCollection(customerConfig)
+    lc.addCollection(fieldLessConfig)
   })
 
   it('has a customers collection', async () => {
     expect(lc.Customers).to.be.ok
     lc.Customers.should.have.property('upsert').that.is.a('function')
+  })
+
+  it('has a fieldless collection', async () => {
+    expect(lc.FieldLess).to.be.ok
+    lc.FieldLess.should.have.property('upsert').that.is.a('function')
   })
 
   describe('upsert', () => {
