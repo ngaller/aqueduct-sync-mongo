@@ -22,11 +22,10 @@ describe('localConnection', () => {
   beforeEach(async () => {
     db = await testConnection()
     lc = new LocalConnection(db)
-    // make the collection exist, otherwise they'll log errors about missing indexes
-    await db.collection('Customers').remove({})
-    await db.collection('FieldLess').remove({})
     lc.addCollection(customerConfig)
     lc.addCollection(fieldLessConfig)
+    // make the collection exist, otherwise it will log error about missing index
+    await db.createCollection('FieldLess')
   })
 
   it('has a customers collection', async () => {

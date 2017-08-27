@@ -15,8 +15,7 @@ module.exports = async function() {
   await Promise.all(collections.map(coll => db.collection(coll.name).remove({})))
   // make the collection exist, otherwise they'll log errors about missing indexes
   // this may give a promise error, the first time it runs, because the database may not exist yet, not sure if there is a good way to initialize it, no time to look right now
-  await db.collection('Customers').remove({})
-  await db.collection('FieldLess').remove({})
+  // await db.dropCollection('Customers')
   connection = db
   return connection
 }
