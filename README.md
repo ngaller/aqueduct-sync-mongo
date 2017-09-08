@@ -1,10 +1,12 @@
 Supporting classes for using aqueduct-sync with Meteor mongo database.
 
- * buildQueue(db, collectionName): build the MongoDB queue, with specified name (async)
+ * buildQueue(db, collectionName, options): build the MongoDB queue, with specified name (async)
+  - the specified options are passed as is to Mongo-Queue - see [https://github.com/chilts/mongodb-queue]
+  - visibility will default to 10 minutes if not specified, to avoid processing an update twice if the remote is taking too long
  * getSyncState(db, collectionName): get sync storage object (async)
  * getLocalConnection(db, pipes): local connection, with collections as per pipes (async)
 
-The local connection will have collection instances created according to the pipe configuration, which should include either a fields array or a localKey value.  
+The local connection will have collection instances created according to the pipe configuration, which should include either a fields array or a localKey value.
 
 `localKey` can be either a string or an array of strings, and if it is not specified it will default to the first fields in the `fields` array.  A unique index will automatically be created on that field  (or fields) if one does not already exist.
 
