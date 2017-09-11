@@ -16,5 +16,6 @@ Methods of local collection instances:
  * find: find a set of record using an arbitrary query
  * update: update one or more record using an arbitrary query or an object id
  * upsert: upsert a single record
+ * remove: remove records matching a selector
  * addOrUpdateChildInCollection
  * removeChildFromCollection
