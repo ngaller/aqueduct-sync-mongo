@@ -19,3 +19,11 @@ Methods of local collection instances:
  * remove: remove records matching a selector
  * addOrUpdateChildInCollection
  * removeChildFromCollection
+
+Methods of the queue:
+
+ * get
+ * add(payload, options) - options are the same as for Mongo-Queue
+ * ack
+
+Methods all return a promise.
