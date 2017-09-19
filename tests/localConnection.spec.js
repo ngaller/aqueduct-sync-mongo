@@ -45,15 +45,15 @@ describe('localConnection', () => {
         expect(upsertResult.inserted).to.equal(1)
         return db.collection('Customers').findOne({CustNum: '6'}).then((result) => {
           expect(result.CustNum).to.equal('6')
-          expect(String(result._id)).to.equal(String(upsertResult.recordId))
+          expect(String(result._id)).to.equal(String(upsertResult.record._id))
         })
       })
     })
 
     it('returns the record id which is a plain string', async () => {
       return lc.Customers.upsert({CustNum: '6'}, 'CustNum').then(upsertResult => {
-        expect(upsertResult.recordId).to.be.a('string')
-        return db.collection('Customers').findOne({_id: upsertResult.recordId}).then((result) => {
+        expect(upsertResult.record._id).to.be.a('string')
+        return db.collection('Customers').findOne({_id: upsertResult.record._id}).then((result) => {
           expect(result.CustNum).to.equal('6')
         })
       })
@@ -68,7 +68,7 @@ describe('localConnection', () => {
             expect(omit(result, '_id')).to.eql({
               CustNum: '10', Name: 'Testing', Amount: 24, OtherField: 123
             })
-            expect(String(result._id)).to.equal(String(upsertResult.recordId))
+            expect(String(result._id)).to.equal(String(upsertResult.record._id))
           })
         }))
     })
@@ -131,7 +131,7 @@ describe('localConnection', () => {
 
     beforeEach(async () => {
       const customer = await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent', Children: [{ChildId: '1'}]})
-      customerId = customer.recordId
+      customerId = customer.record._id
     })
 
     it('gets a record using a selector', async () => {
