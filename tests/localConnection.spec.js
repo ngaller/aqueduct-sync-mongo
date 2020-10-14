@@ -24,8 +24,6 @@ describe('localConnection', () => {
     lc = new LocalConnection(db)
     lc.addCollection(customerConfig)
     lc.addCollection(fieldLessConfig)
-    // make the collection exist, otherwise it will log error about missing index
-    await db.createCollection('FieldLess')
   })
 
   it('has a customers collection', async () => {
@@ -60,7 +58,7 @@ describe('localConnection', () => {
     })
 
     it('updates existing record', async () => {
-      return db.collection('Customers').insert({CustNum: '10', Name: 'Poudroux', Amount: 24}).then(() =>
+      return db.collection('Customers').insertOne({CustNum: '10', Name: 'Poudroux', Amount: 24}).then(() =>
         lc.Customers.upsert({CustNum: '10', Name: 'Testing', OtherField: 123}).then(upsertResult => {
           expect(upsertResult.updated).to.equal(1)
           expect(upsertResult.inserted).to.equal(0)
@@ -97,7 +95,7 @@ describe('localConnection', () => {
 
   describe('addOrUpdateChildInCollection', () => {
     it('adds child to collection', async () => {
-      await db.collection('Customers').remove({})
+      await db.collection('Customers').removeMany({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent', Children: [{ChildId: '1'}]})
       await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
@@ -105,7 +103,7 @@ describe('localConnection', () => {
     })
 
     it('adds child to collection when it does not exist', async () => {
-      await db.collection('Customers').remove({})
+      await db.collection('Customers').removeMany({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent'})
       await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '2', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
@@ -113,7 +111,7 @@ describe('localConnection', () => {
     })
 
     it('replaces existing child in collection', async () => {
-      await db.collection('Customers').remove({})
+      await db.collection('Customers').removeMany({})
       await lc.Customers.upsert({CustNum: '10', ParentId: 'the-parent', Children: [{ChildId: '1'}]})
       await lc.Customers.addOrUpdateChildInCollection({CustNum: '10'}, 'Children', {ChildId: '1', Content: 'Test'}, 'ChildId')
       const customer = await lc.Customers.get({CustNum: '10'})
