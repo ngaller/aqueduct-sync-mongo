@@ -15,6 +15,9 @@ Methods of local collection instances:
  * get: find a single record, extracting keys from the given selector
  * find: find a set of record using an arbitrary query
  * update: update one or more record using an arbitrary query or an object id
+      It's possible to pass a MongoDB operation instead of a record.  Because it's a bit of a hack,
+      the library will only recognize the operations that contain one of these operators:
+      $push, $set, $unset.
  * upsert: upsert a single record
  * remove: remove records matching a selector
  * addOrUpdateChildInCollection

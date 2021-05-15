@@ -74,7 +74,7 @@ describe('localConnection', () => {
 
   describe('update', () => {
     it('updates using identifier', async () => {
-      const r = await  db.collection('Customers').insertOne({CustNum: 'WITH-ID', Name: 'Poudroux', Amount: 24})
+      const r = await db.collection('Customers').insertOne({CustNum: 'WITH-ID', Name: 'Poudroux', Amount: 24})
       const id = r.insertedId
       await lc.Customers.update({Name: 'Joe'}, id)
       const modified = await db.collection('Customers').findOne({_id: id})
@@ -90,6 +90,15 @@ describe('localConnection', () => {
         let customer = await db.collection('Customers').findOne({CustNum})
         expect(customer, CustNum).to.have.property('ParentName').that.eql('The name')
       }
+    })
+
+    it('updates using operation', async() => {
+      const r = await db.collection('Customers').insertOne({CustNum: '12', Name: 'Poudroux', Transactions: [{amount: 222}]})
+      const id = r.insertedId
+      await lc.Customers.update({ $push: {Transactions: {amount: 333}}, $set: {Name: 'Joe'} }, id)
+      const modified = await db.collection('Customers').findOne({_id: id})
+      expect(modified.Name).to.equal('Joe')
+      expect(modified.Transactions).to.eql([{amount: 222}, {amount: 333}])
     })
   })
 

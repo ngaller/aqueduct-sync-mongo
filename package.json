@@ -1,6 +1,6 @@
 {
   "name": "aqueduct-sync-mongo",
-  "version": "2.0.0",
+  "version": "2.1.0",
   "description": "Local connection support for Aqueduct, with MongoDB queue",
   "main": "dist/index.js",
   "scripts": {
