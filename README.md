@@ -19,6 +19,8 @@ Methods of local collection instances:
       the library will only recognize the operations that contain one of these operators:
       $push, $set, $unset.
  * upsert: upsert a single record
+      If the record contains some keys that start with a $ sign, they will be interpreted as MongoDB
+      operations.
  * remove: remove records matching a selector
  * addOrUpdateChildInCollection
  * removeChildFromCollection

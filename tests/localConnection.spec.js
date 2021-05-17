@@ -70,6 +70,14 @@ describe('localConnection', () => {
           })
         }))
     })
+
+    it('uses $setOnInsert if specified', async () => {
+      return lc.Customers.upsert({CustNum: 'NEWCUST', $setOnInsert: { Foo: 'bar' }}, 'CustNum').then(upsertResult => {
+        return db.collection('Customers').findOne({CustNum: 'NEWCUST'}).then((result) => {
+          expect(result.Foo).to.equal('bar')
+        })
+      })
+    })
   })
 
   describe('update', () => {
